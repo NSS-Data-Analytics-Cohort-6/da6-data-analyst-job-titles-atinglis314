@@ -42,12 +42,12 @@ WHERE review_count BETWEEN 500 AND 1000;
 
 --Question 6
 --Show the average star rating for companies in each state. The output should show the state as state and the average rating for the state as avg_rating. Which state shows the highest average rating?
-SELECT location, avg(star_rating) AS avg_rating
+SELECT location, round(avg(star_rating),2) AS avg_rating
 FROM data_analyst_jobs
 WHERE star_rating IS NOT null
 GROUP BY location
 ORDER BY avg_rating DESC;
---Answer: Nebraska has the highest average rating, averaging at 4.199...
+--Answer: Nebraska has the highest average rating, averaging at 4.20
 
 --Question 7
 --Select unique job titles from the data_analyst_jobs table. How many are there?
@@ -75,7 +75,7 @@ GROUP BY company;
 
 --Question 10
 --Add the code to order the query in #9 from highest to lowest average star rating. Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? What is that rating?
-SELECT company, avg(star_rating) AS avg_rating
+SELECT company, round(avg(star_rating),2) AS avg_rating
 FROM data_analyst_jobs
 WHERE review_count > 5000 AND company IS NOT null
 GROUP BY company
