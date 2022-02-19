@@ -25,6 +25,7 @@ SELECT count(*)
 FROM data_analyst_jobs
 WHERE location = 'TN' OR location = 'KY';
 --Answer: 21 in Tennessee alone, 27 in Kentucky or Tennessee
+--Note from code walk through: could have done WHERE location IN (TN, KY)
 
 --Question 4
 --How many postings in Tennessee have a star rating above 4?
@@ -60,10 +61,11 @@ FROM data_analyst_jobs;
 
 --Question 8
 --How many unique job titles are there for California companies?
-SELECT DISTINCT title
+SELECT count(DISTINCT title)
 FROM data_analyst_jobs
 WHERE location = 'CA';
 --Answer: 230
+--Note from code walkthrough: updated query to include count function, rather than looking at "number of rows" after query runs
 
 --Question 9
 --Find the name of each company and its average star rating for all companies that have more than 5000 reviews across all locations. How many companies are there with more that 5000 reviews across all locations?
@@ -72,6 +74,7 @@ FROM data_analyst_jobs
 WHERE review_count > 5000 AND company IS NOT null
 GROUP BY company;
 --Answer: 40 (41 if you don't exclude null)
+--Note from code walkthrough: there are several ways to get the count AND the names/avg data, probably the best way is either two queries or a subquery in the SELECT clause
 
 --Question 10
 --Add the code to order the query in #9 from highest to lowest average star rating. Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? What is that rating?
@@ -84,10 +87,19 @@ ORDER BY avg_rating DESC;
 
 --Question 11
 --Find all the job titles that contain the word ‘Analyst’. How many different job titles are there?
-SELECT title
+SELECT count(title)
 FROM data_analyst_jobs
 WHERE lower(title) LIKE '%analyst%';
---Answer: 1669, 774 unique
+
+SELECT count(distinct title)
+FROM data_analyst_jobs
+WHERE lower(title) LIKE '%analyst%';
+
+SELECT count(distinct lower(title))
+FROM data_analyst_jobs
+WHERE lower(title) LIKE '%analyst%';
+--Answer: 1669 postings, 774 unique titles
+--Note from code walkthrough: iLIKE is LIKE but not case-sensitive, HOWEVER it runs slowly because it does more transformations. Also, ROB put the lower in the SELECT statement, which deduplicated Data Analyst and data analyst before they were counted (answer is 770 in this scenario). Probably slightly more correct
 
 --Question 12
 --How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
